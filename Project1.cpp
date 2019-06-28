@@ -99,6 +99,8 @@ LRESULT CALLBACK WndProc(HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam){
 				PAINTSTRUCT ps;
 				HDC hdc=BeginPaint(hWnd,&ps);
 				// TODO: 在此处添加使用 hdc 的任何绘图代码...
+
+				FillRect(hdc,&ps.rcPaint,(HBRUSH)(11));
 				EndPaint(hWnd,&ps);
 			}
 			break;
@@ -116,7 +118,6 @@ INT_PTR CALLBACK About(HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam){
 	switch(message){
 		case WM_INITDIALOG:
 			return (INT_PTR)TRUE;
-
 		case WM_COMMAND:
 			if(LOWORD(wParam)==IDOK||LOWORD(wParam)==IDCANCEL){
 				EndDialog(hDlg,LOWORD(wParam));
