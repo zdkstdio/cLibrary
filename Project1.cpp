@@ -12,6 +12,7 @@ BOOL InitInstance(HINSTANCE,int);
 
 LRESULT CALLBACK WndProc(HWND,UINT,WPARAM,LPARAM);
 INT_PTR CALLBACK About(HWND,UINT,WPARAM,LPARAM);
+INT_PTR CALLBACK Login(HWND,UINT,WPARAM,LPARAM);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 					  _In_opt_ HINSTANCE hPrevInstance,
@@ -19,7 +20,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 					  _In_ int nCmdShow){
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
-
 
 	LoadStringW(hInstance,IDS_APP_TITLE,szTitle,MAX_LOADSTRING);
 	LoadStringW(hInstance,IDC_PROJECT1,szWindowClass,MAX_LOADSTRING);
@@ -78,6 +78,14 @@ BOOL InitInstance(HINSTANCE hInstance,int nCmdShow){
 //  WM_DESTROY  - 发送退出消息并返回
 LRESULT CALLBACK WndProc(HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam){
 	switch(message){
+		case WM_CREATE:
+			{
+				HWND hWndBtnLogin=CreateWindow(
+					L"BUTTON",L"登录",
+					WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_DEFPUSHBUTTON,
+					200,180,100,50,hWnd,(HMENU)ID_BTN_LOGIN,hInst,NULL);
+			}
+			break;
 		case WM_COMMAND:
 			{
 				int wmId=LOWORD(wParam);
@@ -89,6 +97,13 @@ LRESULT CALLBACK WndProc(HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam){
 					case IDM_EXIT:
 						DestroyWindow(hWnd);
 						break;
+					case ID_BTN_LOGIN:
+						{
+						//	SendMessage((HWND)lParam,WM_SETTEXT,(WPARAM)NULL,(LPARAM)L"登陆中..");
+							DialogBox(hInst,MAKEINTRESOURCE(IDD_LOGIN),hWnd,Login);
+
+							break;
+						}
 					default:
 						return DefWindowProc(hWnd,message,wParam,lParam);
 				}
@@ -99,13 +114,16 @@ LRESULT CALLBACK WndProc(HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam){
 				PAINTSTRUCT ps;
 				HDC hdc=BeginPaint(hWnd,&ps);
 				// TODO: 在此处添加使用 hdc 的任何绘图代码...
-
-				FillRect(hdc,&ps.rcPaint,(HBRUSH)(11));
+				FillRect(hdc,&ps.rcPaint,(HBRUSH)(rand()%15+1));
 				EndPaint(hWnd,&ps);
 			}
 			break;
 		case WM_DESTROY:
 			PostQuitMessage(0);
+			break;
+		case WM_LBUTTONDOWN:
+		//	DialogBox(hInst,MAKEINTRESOURCE(IDD_LOGIN),hWnd,Login);
+		//	MessageBox(hWnd,L"鼠标左键",L"哈哈",MB_YESNO|MB_ICONQUESTION);
 			break;
 		default:
 			return DefWindowProc(hWnd,message,wParam,lParam);
@@ -120,6 +138,33 @@ INT_PTR CALLBACK About(HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam){
 			return (INT_PTR)TRUE;
 		case WM_COMMAND:
 			if(LOWORD(wParam)==IDOK||LOWORD(wParam)==IDCANCEL){
+				EndDialog(hDlg,LOWORD(wParam));
+				return (INT_PTR)TRUE;
+			}
+			break;
+	}
+	return (INT_PTR)FALSE;
+}
+INT_PTR CALLBACK Login(HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam){
+	UNREFERENCED_PARAMETER(lParam);
+	switch(message){
+		case WM_INITDIALOG:
+			return (INT_PTR)TRUE;
+		case WM_COMMAND:
+			if(LOWORD(wParam)==IDCANCEL){
+				EndDialog(hDlg,LOWORD(wParam));
+				return (INT_PTR)TRUE;
+			} else if(LOWORD(wParam)==IDOK){
+				WCHAR username[20];
+				WCHAR password[30];
+				GetDlgItemText(hDlg,IDC_LOGIN_USERNAME,username,sizeof username);
+				GetDlgItemText(hDlg,IDC_LOGIN_PASSWORD,password,sizeof password);
+				if(wcscmp(username,L"user")==0&&wcscmp(password,L"123456")==0){
+				//	EndDialog(hdlg,IDC_BUTTON1);
+					MessageBox(hDlg,L"登陆成功！",L"用户登录",MB_OK);
+				}else{
+					MessageBox(hDlg,L"用户名或者密码错误！",L"用户登录",MB_OK);
+				}
 				EndDialog(hDlg,LOWORD(wParam));
 				return (INT_PTR)TRUE;
 			}

@@ -1,7 +1,8 @@
 ﻿  Project1.cpp
+E:\VisualStudioDocs\c语言编程实战\Project1\Project1.cpp(117): warning C4312: “类型强制转换”: 从“int”转换到更大的“HBRUSH”
   正在生成代码
-  1 of 5 functions (20.0%) were compiled, the rest were copied from previous compilation.
+  4 of 6 functions (66.7%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+    0 functions had inline decision re-evaluated but remain unchanged
   已完成代码的生成
   Project1.vcxproj -> E:\VisualStudioDocs\c语言编程实战\Project1\x64\Release\Project1.exe

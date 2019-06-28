@@ -170,6 +170,7 @@
     <ResourceCompile Include="Project1.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="icon1.ico" />
     <Image Include="Project1.ico" />
     <Image Include="small.ico" />
   </ItemGroup>
