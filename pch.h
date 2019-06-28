@@ -5,4 +5,3 @@
 // 请勿在此处添加要频繁更新的文件，这将使得性能优势无效。
 #pragma once
 #include"framework.h"
-#define EPS 0.0001

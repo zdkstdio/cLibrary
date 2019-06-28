@@ -1,45 +1,29 @@
-﻿#include "pch.h"
-#include "framework.h"
-#include "Project1.h"
-#define MAX_LOADSTRING 100
+﻿#include"pch.h"
+#include"framework.h"
+#include"Project1.h"
+#include"const.h"
 //#define NDEBUG
 
-HINSTANCE hInst;                                // 当前实例
-WCHAR szTitle[MAX_LOADSTRING];                  // 标题栏文本
-WCHAR szWindowClass[MAX_LOADSTRING];            // 主窗口类名
-ATOM MyRegisterClass(HINSTANCE hInstance);
-BOOL InitInstance(HINSTANCE,int);
+HINSTANCE hInst;// 当前实例
 
 LRESULT CALLBACK WndProc(HWND,UINT,WPARAM,LPARAM);
-INT_PTR CALLBACK About(HWND,UINT,WPARAM,LPARAM);
-INT_PTR CALLBACK Login(HWND,UINT,WPARAM,LPARAM);
+INT_PTR CALLBACK WndAboutProc(HWND,UINT,WPARAM,LPARAM);
+INT_PTR CALLBACK WndLoginProc(HWND,UINT,WPARAM,LPARAM);
+INT_PTR CALLBACK WndSignupProc(HWND,UINT,WPARAM,LPARAM);
+INT_PTR CALLBACK WndBrowseProc(HWND,UINT,WPARAM,LPARAM);
+INT_PTR CALLBACK WndFindProc(HWND,UINT,WPARAM,LPARAM);
+INT_PTR CALLBACK WndBorrowProc(HWND,UINT,WPARAM,LPARAM);
+INT_PTR CALLBACK WndSubscribeProc(HWND,UINT,WPARAM,LPARAM);
+INT_PTR CALLBACK WndAdminProc(HWND,UINT,WPARAM,LPARAM);
 
-int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
-					  _In_opt_ HINSTANCE hPrevInstance,
-					  _In_ LPWSTR lpCmdLine,
-					  _In_ int nCmdShow){
+int APIENTRY wWinMain(_In_ HINSTANCE hInstance,_In_opt_ HINSTANCE hPrevInstance,_In_ LPWSTR lpCmdLine,_In_ int nCmdShow){
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
-
+	WCHAR szTitle[MAX_LOADSTRING];
+	WCHAR szWindowClass[MAX_LOADSTRING];
 	LoadStringW(hInstance,IDS_APP_TITLE,szTitle,MAX_LOADSTRING);
 	LoadStringW(hInstance,IDC_PROJECT1,szWindowClass,MAX_LOADSTRING);
-	MyRegisterClass(hInstance);
-	if(!InitInstance(hInstance,nCmdShow)){
-		return FALSE;
-	}
-	HACCEL hAccelTable=LoadAccelerators(hInstance,MAKEINTRESOURCE(IDC_PROJECT1));
-	MSG msg;
-	while(GetMessage(&msg,nullptr,0,0)){
-		if(!TranslateAccelerator(msg.hwnd,hAccelTable,&msg)){
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
-	}
-	return(int)msg.wParam;
-}
-//  函数: MyRegisterClass()
-//  目标: 注册窗口类。
-ATOM MyRegisterClass(HINSTANCE hInstance){
+	//注册窗口类。
 	WNDCLASSEXW wcex;
 	wcex.cbSize=sizeof(WNDCLASSEX);
 	wcex.style=CS_HREDRAW|CS_VREDRAW;
@@ -53,23 +37,25 @@ ATOM MyRegisterClass(HINSTANCE hInstance){
 	wcex.lpszMenuName=MAKEINTRESOURCEW(IDC_PROJECT1);
 	wcex.lpszClassName=szWindowClass;
 	wcex.hIconSm=LoadIcon(wcex.hInstance,MAKEINTRESOURCE(IDI_SMALL));
-	return RegisterClassExW(&wcex);
-}
-//   函数: InitInstance(HINSTANCE, int)
-//   目标: 保存实例句柄并创建主窗口
-//   注释:
-//        在此函数中，我们在全局变量中保存实例句柄并
-//        创建和显示主程序窗口。
-BOOL InitInstance(HINSTANCE hInstance,int nCmdShow){
+	RegisterClassExW(&wcex);
+	//保存实例句柄并创建主窗口
 	hInst=hInstance; // 将实例句柄存储在全局变量
 	HWND hWnd=CreateWindowW(szWindowClass,szTitle,WS_OVERLAPPEDWINDOW,
 							CW_USEDEFAULT,0,CW_USEDEFAULT,0,nullptr,nullptr,hInstance,nullptr);
 	if(!hWnd){
-		return FALSE;
+		return 0;
 	}
 	ShowWindow(hWnd,nCmdShow);
-	UpdateWindow(hWnd);
-	return TRUE;
+	MoveWindow(hWnd,100,100,350,500,true);
+	HACCEL hAccelTable=LoadAccelerators(hInstance,MAKEINTRESOURCE(IDC_PROJECT1));
+	MSG msg;
+	while(GetMessage(&msg,nullptr,0,0)){
+		if(!TranslateAccelerator(msg.hwnd,hAccelTable,&msg)){
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+	}
+	return(int)msg.wParam;
 }
 //  函数: WndProc(HWND, UINT, WPARAM, LPARAM)
 //  目标: 处理主窗口的消息。
@@ -83,7 +69,31 @@ LRESULT CALLBACK WndProc(HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam){
 				HWND hWndBtnLogin=CreateWindow(
 					L"BUTTON",L"登录",
 					WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_DEFPUSHBUTTON,
-					200,180,100,50,hWnd,(HMENU)ID_BTN_LOGIN,hInst,NULL);
+					50,50,100,50,hWnd,(HMENU)ID_BTN_LOGIN,hInst,NULL);
+				HWND hWndBtnSignup=CreateWindow(
+					L"BUTTON",L"注册",
+					WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_DEFPUSHBUTTON,
+					200,50,100,50,hWnd,(HMENU)ID_BTN_SIGNUP,hInst,NULL);
+				HWND hWndBtnBrowse=CreateWindow(
+					L"BUTTON",L"浏览",
+					WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_DEFPUSHBUTTON,
+					50,150,100,50,hWnd,(HMENU)ID_BTN_BROWSE,hInst,NULL);
+				HWND hWndBtnFind=CreateWindow(
+					L"BUTTON",L"查询",
+					WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_DEFPUSHBUTTON,
+					200,150,100,50,hWnd,(HMENU)ID_BTN_FIND,hInst,NULL);
+				HWND hWndBtnBorrow=CreateWindow(
+					L"BUTTON",L"借阅",
+					WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_DEFPUSHBUTTON,
+					50,250,100,50,hWnd,(HMENU)ID_BTN_BORROW,hInst,NULL);
+				HWND hWndBtnSubscribe=CreateWindow(
+					L"BUTTON",L"预订",
+					WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_DEFPUSHBUTTON,
+					200,250,100,50,hWnd,(HMENU)ID_BTN_SUBSCRIBE,hInst,NULL);
+				HWND hWndBtnAdmin=CreateWindow(
+					L"BUTTON",L"管理员入口",
+					WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_DEFPUSHBUTTON,
+					50,350,250,50,hWnd,(HMENU)ID_BTN_ADMIN,hInst,NULL);
 			}
 			break;
 		case WM_COMMAND:
@@ -92,18 +102,34 @@ LRESULT CALLBACK WndProc(HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam){
 				// 分析菜单选择:
 				switch(wmId){
 					case IDM_ABOUT:
-						DialogBox(hInst,MAKEINTRESOURCE(IDD_ABOUTBOX),hWnd,About);
+						DialogBox(hInst,MAKEINTRESOURCE(IDD_ABOUTBOX),hWnd,WndAboutProc);
 						break;
 					case IDM_EXIT:
 						DestroyWindow(hWnd);
 						break;
 					case ID_BTN_LOGIN:
-						{
-						//	SendMessage((HWND)lParam,WM_SETTEXT,(WPARAM)NULL,(LPARAM)L"登陆中..");
-							DialogBox(hInst,MAKEINTRESOURCE(IDD_LOGIN),hWnd,Login);
-
-							break;
-						}
+						//SendMessage((HWND)lParam,WM_SETTEXT,(WPARAM)NULL,(LPARAM)L"登陆中..");
+						DialogBox(hInst,MAKEINTRESOURCE(IDD_LOGIN),hWnd,WndLoginProc);
+						break;
+					case ID_BTN_SIGNUP:
+						DialogBox(hInst,MAKEINTRESOURCE(IDD_SIGNUP),hWnd,WndSignupProc);
+						break;
+		/*			case ID_BTN_BROWSE:
+						DialogBox(hInst,MAKEINTRESOURCE(IDD_BROWSE),hWnd,WndBrowseProc);
+						break;
+					case ID_BTN_FIND:
+						DialogBox(hInst,MAKEINTRESOURCE(IDD_FIND),hWnd,WndFindProc);
+						break;
+					case ID_BTN_BORROW:
+						DialogBox(hInst,MAKEINTRESOURCE(IDD_BORROW),hWnd,WndBorrowProc);
+						break;
+					case ID_BTN_SUBSCRIBE:
+						DialogBox(hInst,MAKEINTRESOURCE(IDD_BORROW),hWnd,WndSubscribeProc);
+						break;
+					case ID_BTN_ADMIN:
+						DialogBox(hInst,MAKEINTRESOURCE(IDD_LOGOUT),hWnd,WndAdminProc);
+						break;
+		*/
 					default:
 						return DefWindowProc(hWnd,message,wParam,lParam);
 				}
@@ -114,7 +140,7 @@ LRESULT CALLBACK WndProc(HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam){
 				PAINTSTRUCT ps;
 				HDC hdc=BeginPaint(hWnd,&ps);
 				// TODO: 在此处添加使用 hdc 的任何绘图代码...
-				FillRect(hdc,&ps.rcPaint,(HBRUSH)(rand()%15+1));
+			//	FillRect(hdc,&ps.rcPaint,(HBRUSH)(rand()%15+1));
 				EndPaint(hWnd,&ps);
 			}
 			break;
@@ -122,7 +148,7 @@ LRESULT CALLBACK WndProc(HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam){
 			PostQuitMessage(0);
 			break;
 		case WM_LBUTTONDOWN:
-		//	DialogBox(hInst,MAKEINTRESOURCE(IDD_LOGIN),hWnd,Login);
+		//	DialogBox(hInst,MAKEINTRESOURCE(IDD_LOGIN),hWnd,WndLoginProc);
 		//	MessageBox(hWnd,L"鼠标左键",L"哈哈",MB_YESNO|MB_ICONQUESTION);
 			break;
 		default:
@@ -131,7 +157,7 @@ LRESULT CALLBACK WndProc(HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam){
 	return 0;
 }
 // “关于”框的消息处理程序。
-INT_PTR CALLBACK About(HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam){
+INT_PTR CALLBACK WndAboutProc(HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam){
 	UNREFERENCED_PARAMETER(lParam);
 	switch(message){
 		case WM_INITDIALOG:
@@ -145,7 +171,8 @@ INT_PTR CALLBACK About(HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam){
 	}
 	return (INT_PTR)FALSE;
 }
-INT_PTR CALLBACK Login(HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam){
+// “登录”框的消息处理程序。
+INT_PTR CALLBACK WndLoginProc(HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam){
 	UNREFERENCED_PARAMETER(lParam);
 	switch(message){
 		case WM_INITDIALOG:
@@ -155,19 +182,112 @@ INT_PTR CALLBACK Login(HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam){
 				EndDialog(hDlg,LOWORD(wParam));
 				return (INT_PTR)TRUE;
 			} else if(LOWORD(wParam)==IDOK){
-				WCHAR username[20];
-				WCHAR password[30];
-				GetDlgItemText(hDlg,IDC_LOGIN_USERNAME,username,sizeof username);
-				GetDlgItemText(hDlg,IDC_LOGIN_PASSWORD,password,sizeof password);
-				if(wcscmp(username,L"user")==0&&wcscmp(password,L"123456")==0){
-				//	EndDialog(hdlg,IDC_BUTTON1);
+				WCHAR username[MAX_LOADSTRING];
+				WCHAR password[MAX_LOADSTRING];
+				GetDlgItemText(hDlg,IDC_LOGIN_USERNAME,username,MAX_LOADSTRING);
+				GetDlgItemText(hDlg,IDC_LOGIN_PASSWORD,password,MAX_LOADSTRING);
+				EndDialog(hDlg,LOWORD(wParam));
+				if(false){//!isUsed()
+					MessageBox(hDlg,L"用户名不存在！",L"用户登录",MB_OK);
+				}else if(true){//login()
 					MessageBox(hDlg,L"登陆成功！",L"用户登录",MB_OK);
 				}else{
-					MessageBox(hDlg,L"用户名或者密码错误！",L"用户登录",MB_OK);
+					MessageBox(hDlg,L"密码错误！",L"用户登录",MB_OK);
 				}
-				EndDialog(hDlg,LOWORD(wParam));
 				return (INT_PTR)TRUE;
 			}
+			break;
+	}
+	return (INT_PTR)FALSE;
+}
+// “注册”框的消息处理程序。
+INT_PTR CALLBACK WndSignupProc(HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam){
+	UNREFERENCED_PARAMETER(lParam);
+	switch(message){
+		case WM_INITDIALOG:
+			return (INT_PTR)TRUE;
+		case WM_COMMAND:
+			if(LOWORD(wParam)==IDCANCEL){
+				EndDialog(hDlg,LOWORD(wParam));
+				return (INT_PTR)TRUE;
+			} else if(LOWORD(wParam)==IDOK){
+				WCHAR username[MAX_LOADSTRING];
+				WCHAR password[MAX_LOADSTRING];
+				WCHAR password2[MAX_LOADSTRING];
+				GetDlgItemText(hDlg,IDC_SIGNUP_USERNAME,username,MAX_LOADSTRING);
+				GetDlgItemText(hDlg,IDC_SIGNUP_PASSWORD,password,MAX_LOADSTRING);
+				GetDlgItemText(hDlg,IDC_SIGNUP_PASSWORD2,password2,MAX_LOADSTRING);
+				EndDialog(hDlg,LOWORD(wParam));
+				if(wcscmp(password,password2)!=0){
+					MessageBox(hDlg,L"两次密码不一致！",L"用户注册",MB_OK);
+				}else if(true){//isUsed
+					MessageBox(hDlg,L"用户名已被使用！",L"用户注册",MB_OK);
+				} else{
+					//SignUp();
+					MessageBox(hDlg,L"注册成功！",L"用户注册",MB_OK);
+				}
+				return (INT_PTR)TRUE;
+			}
+			break;
+	}
+	return (INT_PTR)FALSE;
+}
+// “浏览”框的消息处理程序。
+INT_PTR CALLBACK WndBrowseProc(HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam){
+	UNREFERENCED_PARAMETER(lParam);
+	switch(message){
+		case WM_INITDIALOG:
+			return (INT_PTR)TRUE;
+		case WM_COMMAND:
+			
+			break;
+	}
+	return (INT_PTR)FALSE;
+}
+// “查询”框的消息处理程序。
+INT_PTR CALLBACK WndFindProc(HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam){
+	UNREFERENCED_PARAMETER(lParam);
+	switch(message){
+		case WM_INITDIALOG:
+			return (INT_PTR)TRUE;
+		case WM_COMMAND:
+
+			break;
+	}
+	return (INT_PTR)FALSE;
+}
+// “借阅”框的消息处理程序。
+INT_PTR CALLBACK WndBorrowProc(HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam){
+	UNREFERENCED_PARAMETER(lParam);
+	switch(message){
+		case WM_INITDIALOG:
+			return (INT_PTR)TRUE;
+		case WM_COMMAND:
+
+			break;
+	}
+	return (INT_PTR)FALSE;
+}
+// “预订”框的消息处理程序。
+INT_PTR CALLBACK WndSubscribeProc(HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam){
+	UNREFERENCED_PARAMETER(lParam);
+	switch(message){
+		case WM_INITDIALOG:
+			return (INT_PTR)TRUE;
+		case WM_COMMAND:
+
+			break;
+	}
+	return (INT_PTR)FALSE;
+}
+// “管理员入口”框的消息处理程序。
+INT_PTR CALLBACK WndAdminProc(HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam){
+	UNREFERENCED_PARAMETER(lParam);
+	switch(message){
+		case WM_INITDIALOG:
+			return (INT_PTR)TRUE;
+		case WM_COMMAND:
+
 			break;
 	}
 	return (INT_PTR)FALSE;
