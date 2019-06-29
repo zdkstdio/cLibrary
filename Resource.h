@@ -2,6 +2,8 @@
 // Microsoft Visual C++ 生成的包含文件。
 // 供 Project1.rc 使用
 //
+#define IDC_ADMIN_SUBSCRIBEBTN          3
+#define IDC_ADMIN_USERBTN               4
 #define IDD_LOGIN                       102
 #define IDS_APP_TITLE                   103
 #define IDD_ABOUTBOX                    103
@@ -19,6 +21,8 @@
 #define ID_BTN_ADMIN                    115
 #define ID_BTN_SUBSCRIBE                116
 #define ID_BTN_RETURN                   117
+#define ID_BTN_LOGOUT                   118
+#define ID_BTN_CNGPSD                   119
 #define IDD_BROWSE                      133
 #define IDD_BORROW                      134
 #define IDD_FIND                        135
@@ -27,6 +31,8 @@
 #define IDD_ADMIN                       138
 #define IDD_DIALOG1                     139
 #define IDD_ADMIN_SELECT                139
+#define IDD_ADMIN_SUBSCRIBE             140
+#define IDD_ADMIN_USER                  141
 #define IDC_LOGIN_USERNAME              1004
 #define IDC_LOGIN_PASSWORD              1005
 #define IDC_SIGNUP_PASSWORD2            1006
@@ -47,6 +53,8 @@
 #define IDC_ADMIN_SELECT_ADD            1022
 #define IDC_ADMIN_SELECT_EDIT           1023
 #define IDC_ADMIN_SELECT_DEL            1024
+#define IDC_ADMIN_SUBSCRIBE_LIST        1024
+#define IDC_ADMIN_USER_LIST             1025
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
@@ -54,9 +62,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        140
+#define _APS_NEXT_RESOURCE_VALUE        142
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1023
-#define _APS_NEXT_SYMED_VALUE           118
+#define _APS_NEXT_CONTROL_VALUE         1026
+#define _APS_NEXT_SYMED_VALUE           120
 #endif
 #endif

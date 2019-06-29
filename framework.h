@@ -10,3 +10,4 @@
 #include<ctime>
 #include<algorithm>
 #include<vector>
+#include<list>
